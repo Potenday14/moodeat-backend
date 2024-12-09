@@ -19,9 +19,9 @@ services:
     image: postgres:15
     container_name: postgres-db
     environment:
-      POSTGRES_USER: test_user
-      POSTGRES_PASSWORD: qifdnsckjnoiejralfsd23o4jrfodivb0
-      POSTGRES_DB: test
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
     ports:
       - "5432:5432" # 로컬 5432 포트를 컨테이너의 5432 포트에 연결
     volumes:

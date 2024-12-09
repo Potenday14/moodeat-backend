@@ -10,6 +10,13 @@ on:
 jobs:
   Deploy:
     runs-on: ubuntu-latest
+
+    env: # GitHub Actions Secrets를 docker-compose.yml 에서의 환경 변수로 설정
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+
+
     steps:
       - name: Github Repository에 올린 파일 불러오기
         uses: actions/checkout@v2
