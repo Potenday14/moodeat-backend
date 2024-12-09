@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.0'
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.ec4j.editorconfig' version '0.1.0'
+    id 'checkstyle'
 }
 
 group = 'com.example'
@@ -34,3 +36,21 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+editorconfig {
+    excludes = ['build']
+}
+
+checkstyle {
+    maxWarnings = 0
+    configFile = file("${rootDir}/config/naver-checkstyle-rules.xml")
+    configProperties = ["suppressionFile": "${rootDir}/config/naver-checkstyle-suppressions.xml"]
+    toolVersion = "9.2.1"
+    sourceSets = [sourceSets.main]
+}
+
+check.dependsOn editorconfigCheck
+checkstyleMain.source = fileTree('src/main/java')
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
