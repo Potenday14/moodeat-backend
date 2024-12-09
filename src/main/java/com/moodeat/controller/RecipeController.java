@@ -1,4 +1,4 @@
-package com.ncptest.controller;
+package com.moodeat.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ncptest.dto.ErrorResponse;
-import com.ncptest.dto.recipe.RequestCreateRecipe;
-import com.ncptest.dto.recipe.ResponseCreateRecipe;
+import com.moodeat.dto.ErrorResponse;
+import com.moodeat.dto.recipe.RequestCreateRecipe;
+import com.moodeat.dto.recipe.ResponseCreateRecipe;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

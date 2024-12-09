@@ -1,4 +1,4 @@
-package com.ncptest.config;
+package com.moodeat.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

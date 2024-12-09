@@ -1,4 +1,4 @@
-package com.ncptest.dto;
+package com.moodeat.dto;
 
 import java.time.LocalDateTime;
 

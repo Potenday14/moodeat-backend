@@ -1,4 +1,4 @@
-package com.ncptest.dto.recipe;
+package com.moodeat.dto.recipe;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
