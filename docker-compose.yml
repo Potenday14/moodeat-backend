@@ -7,11 +7,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080" # 로컬 8080 포트를 컨테이너의 8080 포트에 연결
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/test
-#      SPRING_DATASOURCE_USERNAME: test_user
-#      SPRING_DATASOURCE_PASSWORD: qifdnsckjnoiejralfsd23o4jrfodivb0
-#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/test
+      # 마지막 슬래시 뒤에는 밑에 db.environment.POSTGRE_DB랑 맞추기
     depends_on:
       - db
 
@@ -19,9 +17,11 @@ services:
     image: postgres:15
     container_name: postgres-db
     environment:
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test
+      # 도커에서 처음 postgres 설치하면서 만드는 슈퍼유저.
+      # 한번 만들어진 상태면 유저 생성 더 안함. 도커허브, NCP에는 이런 비번 아님
     ports:
       - "5432:5432" # 로컬 5432 포트를 컨테이너의 5432 포트에 연결
     volumes:
