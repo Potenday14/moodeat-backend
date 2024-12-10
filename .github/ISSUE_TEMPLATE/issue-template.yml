@@ -1,6 +1,6 @@
 name: "Task"
 description: "새로운 작업"
-labels: [ "backend" ]
+labels: [ "Backend" ]
 body:
   - type: textarea
     attributes:
