@@ -9,8 +9,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
-import com.moodeat.dto.ManualData;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,7 +43,8 @@ public class Recipe {
 	private String mainPhoto;
 
 	@JdbcTypeCode(SqlTypes.JSON)
-	private List<ManualData> manuals;
+	private List<ManualStep> manuals = new ArrayList<>();
+	;
 
 	private String tip;
 

@@ -10,8 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import com.moodeat.dto.Message;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,10 +49,10 @@ public class UserRecipeRecommendation {
 	private String reason;
 
 	@JdbcTypeCode(SqlTypes.JSON)
-	private List<String> keywords;
+	private List<String> keywords = new ArrayList<>();
 
 	@JdbcTypeCode(SqlTypes.JSON)
-	private List<Message> chatHistories;
+	private List<Message> chatHistories = new ArrayList<>();
 
 	@CreationTimestamp
 	@Column(updatable = false)
