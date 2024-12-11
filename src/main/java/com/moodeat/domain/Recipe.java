@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Recipe {
@@ -46,6 +47,7 @@ public class Recipe {
 	private String mainPhoto;
 
 	@JdbcTypeCode(SqlTypes.JSON)
+	@Builder.Default
 	private List<ManualStep> manuals = new ArrayList<>();
 
 	private String tip;
