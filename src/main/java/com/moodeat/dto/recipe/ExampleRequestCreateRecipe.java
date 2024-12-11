@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class RequestCreateRecipe {
+public class ExampleRequestCreateRecipe {
 	@Schema(description = "제목", example = "맛있는 요리 레시피 알려줘")
 	@NotBlank(message = "사용자 요청을 입력해야 합니다.")
 	private String userMessage;

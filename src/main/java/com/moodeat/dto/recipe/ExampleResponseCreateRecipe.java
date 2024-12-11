@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class ResponseCreateRecipe {
+public class ExampleResponseCreateRecipe {
 	@Schema(description = "생성된 요리 레시피", example = "재료: ~~~")
 	private String recipeGuide;
 }

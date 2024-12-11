@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.dto.ExampleErrorResponse;
-import com.moodeat.dto.recipe.RequestCreateRecipe;
-import com.moodeat.dto.recipe.ResponseCreateRecipe;
+import com.moodeat.dto.recipe.ExampleRequestCreateRecipe;
+import com.moodeat.dto.recipe.ExampleResponseCreateRecipe;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,15 +35,16 @@ public class ExampleRecipeController {
 	@Operation(summary = "레시피 생성", description = "사용자 메세지 기반으로 추천 레시피를 생성합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "레시피 생성 성공",
-			content = @Content(schema = @Schema(implementation = ResponseCreateRecipe.class))),
+			content = @Content(schema = @Schema(implementation = ExampleResponseCreateRecipe.class))),
 		@ApiResponse(responseCode = "400", description = "잘못된 요청",
 			content = @Content(schema = @Schema(implementation = ExampleErrorResponse.class)))
 	})
 	@PostMapping()
-	public ResponseEntity<ResponseCreateRecipe> createRecipe(@Valid @RequestBody RequestCreateRecipe request) {
+	public ResponseEntity<ExampleResponseCreateRecipe> createRecipe(
+		@Valid @RequestBody ExampleRequestCreateRecipe request) {
 		String recipeGuide = "test";
 
-		ResponseCreateRecipe response = new ResponseCreateRecipe();
+		ExampleResponseCreateRecipe response = new ExampleResponseCreateRecipe();
 		response.setRecipeGuide(recipeGuide);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
