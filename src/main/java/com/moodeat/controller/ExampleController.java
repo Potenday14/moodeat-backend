@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.dto.ExampleErrorResponse;
-import com.moodeat.dto.recipe.ExampleRequestCreateRecipe;
-import com.moodeat.dto.recipe.ExampleResponseCreateRecipe;
+import com.moodeat.dto.example.ExampleRequestCreateRecipe;
+import com.moodeat.dto.example.ExampleResponseCreateRecipe;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,11 +26,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "Recipe", description = "레시피 관련 API입니다.")
+@Tag(name = "Recipe Example", description = "레시피 관련 예시 API입니다.")
 @RestController
-@RequestMapping("/recipe")
+@RequestMapping("/recipe-example")
 @RequiredArgsConstructor
-public class ExampleRecipeController {
+public class ExampleController {
 
 	@Operation(summary = "레시피 생성", description = "사용자 메세지 기반으로 추천 레시피를 생성합니다.")
 	@ApiResponses(value = {
