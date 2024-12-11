@@ -17,7 +17,7 @@ services:
     container_name: postgres-db
     environment:
       POSTGRES_USER: "${POSTGRES_USER:-test_user}"
-      POSTGRES_PASSWORD: "${POSTGRES_USER:-test_password}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-test_password}"
       POSTGRES_DB: "${POSTGRES_DB:-test}"
       # 도커에서 처음 postgres 설치하면서 만드는 슈퍼유저.
       # 한번 만들어진 상태면 유저 생성 더 안함. NCP에는 이런 비번 아님
