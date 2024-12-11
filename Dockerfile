@@ -10,7 +10,7 @@ RUN gradle build --no-daemon || return 0
 COPY src ./src
 RUN gradle bootJar --no-daemon
 
-# 4. JDK 17 기반으로 빌드된 JAR 파일 실행
+# 4. JDK 21 기반으로 빌드된 JAR 파일 실행
 FROM openjdk:17-jdk-slim
 COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
