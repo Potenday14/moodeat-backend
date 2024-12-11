@@ -16,7 +16,7 @@ jobs:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       DB_DOMAIN: db
-      SPRING_DDL_AUTO: update
+      SPRING_DDL_AUTO: create
 
     steps:
       - name: Github Repository에 올린 파일 불러오기

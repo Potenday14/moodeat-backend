@@ -1,4 +1,4 @@
-FROM gradle:8.11.0-jdk21 AS build
+FROM gradle:8.11.0-jdk17 AS build
 WORKDIR /app
 
 # 2. Gradle 캐시를 활용하기 위해 먼저 build.gradle과 설정 파일 복사
@@ -11,7 +11,7 @@ COPY src ./src
 RUN gradle bootJar --no-daemon
 
 # 4. JDK 21 기반으로 빌드된 JAR 파일 실행
-FROM openjdk:21-jdk-slim
+FROM openjdk:17-jdk-slim
 COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app.jar"]

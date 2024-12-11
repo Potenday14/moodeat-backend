@@ -7,6 +7,8 @@ services:
       dockerfile: "${DOCKER_FILE_PATH:-Dockerfile}"
     ports:
       - "8080:8080" # 로컬 8080 포트를 컨테이너의 8080 포트에 연결
+    environment:
+      DB_DOMAIN: db
     depends_on:
       - db
 
