@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moodeat.dto.ErrorResponse;
+import com.moodeat.dto.ExampleErrorResponse;
 import com.moodeat.dto.recipe.RequestCreateRecipe;
 import com.moodeat.dto.recipe.ResponseCreateRecipe;
 
@@ -30,14 +30,14 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/recipe")
 @RequiredArgsConstructor
-public class RecipeController {
+public class ExampleRecipeController {
 
 	@Operation(summary = "레시피 생성", description = "사용자 메세지 기반으로 추천 레시피를 생성합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "레시피 생성 성공",
 			content = @Content(schema = @Schema(implementation = ResponseCreateRecipe.class))),
 		@ApiResponse(responseCode = "400", description = "잘못된 요청",
-			content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+			content = @Content(schema = @Schema(implementation = ExampleErrorResponse.class)))
 	})
 	@PostMapping()
 	public ResponseEntity<ResponseCreateRecipe> createRecipe(@Valid @RequestBody RequestCreateRecipe request) {

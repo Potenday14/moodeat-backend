@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Schema(description = "Validation 실패 또는 기타 에러 응답 객체")
 @Data
-public class ErrorResponse {
+public class ExampleErrorResponse {
 
 	@Schema(description = "에러 발생 시각", example = "2024-12-08T09:14:28.864+00:00")
 	private LocalDateTime timestamp;

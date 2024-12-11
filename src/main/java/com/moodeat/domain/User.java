@@ -16,8 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
 @Table(name = "users")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -26,7 +26,7 @@ public class User {
 	@Column(name = "user_id")
 	private Long id;
 
-	@Column(length = 10)
+	@Column(nullable = false, length = 10)
 	private String name;
 
 	@CreationTimestamp
