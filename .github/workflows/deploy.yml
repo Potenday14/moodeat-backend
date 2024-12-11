@@ -46,6 +46,36 @@ jobs:
       - name: 빌드된 파일 이름 변경하기
         run: mv ./build/libs/*SNAPSHOT.jar ./java-app.jar
 
+
+# cli 부분
+      - name: NCP CLI 다운로드, 이름 편하게 cli라고만 하고 끝내기
+        run: |
+          cd ~
+          mkdir ncp_cli
+          cd ncp_cli
+          wget -q https://www.ncloud.com/api/support/download/files/cli/CLI_1.1.23_20241121.zip
+          unzip -q *.zip
+          rm *.zip
+          mv CLI_* cli
+      - name: CLI Credential 세팅
+        run: |
+          cd ~/ncp_cli/cli/cli_linux
+          echo -e "\n\n\n" | ./ncloud configure
+      - name: 깃허브 액션 IP 구하기
+        id: ip
+        uses: haythem/public-ip@v1.3
+      - name: ACG 에 깃허브 액션 IP 인바운드 규칙 추가
+        run: |
+          echo "${{ secrets.NCLOUD_CONFIGURE }}" > ~/.ncloud/configure
+          cd ~/ncp_cli/cli/cli_linux
+          ./ncloud vserver addAccessControlGroupInboundRule \
+          --regionCode KR \
+          --vpcNo ${{ secrets.NCLOUD_VPC_NO }} \
+          --accessControlGroupNo ${{ secrets.NCLOUD_ACG_NO }} \
+          --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ steps.ip.outputs.ipv4 }}/32', portRange='22'"
+
+#cli - 규칙 추가까진 성공
+
       - name: 필요 파일 scp 전송
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -67,3 +97,17 @@ jobs:
             sudo chmod +x java-app.jar
             docker-compose build
             docker-compose up -d
+
+
+
+
+      - name: ACG 에 깃허브 액션 IP 인바운드 규칙 삭제
+        run: |
+          cd ~/ncp_cli/cli/cli_linux
+          
+          ./ncloud vserver removeAccessControlGroupInboundRule \
+          --regionCode KR \
+          --vpcNo ${{ secrets.NCLOUD_VPC_NO }} \
+          --accessControlGroupNo ${{ secrets.NCLOUD_ACG_NO }} \
+          --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ steps.ip.outputs.ipv4 }}/32', portRange='22'"
+
