@@ -40,11 +40,14 @@ public class Recipe {
 	@Column(nullable = false, length = 20)
 	private String name;
 
-	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-	private List<RecipeIngredient> mainIngredients = new ArrayList<>();
+	// @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+	// private List<RecipeIngredient> mainIngredients = new ArrayList<>();
+	//
+	// @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+	// private List<RecipeIngredient> subIngredients = new ArrayList<>();
 
 	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-	private List<RecipeIngredient> subIngredients = new ArrayList<>();
+	private List<RecipeIngredient> ingredients = new ArrayList<>();
 
 	@Column(unique = true, nullable = false)
 	private String mainPhoto;
