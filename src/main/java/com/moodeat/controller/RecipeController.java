@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.dto.ResponseError;
+import com.moodeat.dto.mockup.MockupResponseGetRecipesById;
 import com.moodeat.dto.recipe.ResponseGetRecipesById;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +38,8 @@ public class RecipeController {
 		@Parameter(description = "레시피 ID", example = "1")
 		@PathVariable("recipeId") Long recipeId) {
 
-		ResponseGetRecipesById response = new ResponseGetRecipesById();
+		// ResponseGetRecipesById response = new ResponseGetRecipesById();
+		ResponseGetRecipesById response = new MockupResponseGetRecipesById();
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

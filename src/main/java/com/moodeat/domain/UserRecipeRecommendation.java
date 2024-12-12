@@ -53,9 +53,11 @@ public class UserRecipeRecommendation {
 	private String reason;
 
 	@JdbcTypeCode(SqlTypes.JSON)
+	@Builder.Default
 	private List<String> keywords = new ArrayList<>();
 
 	@JdbcTypeCode(SqlTypes.JSON)
+	@Builder.Default
 	private List<Message> chatHistories = new ArrayList<>();
 
 	@CreationTimestamp

@@ -47,6 +47,7 @@ public class Recipe {
 	private String mainPhoto;
 
 	@JdbcTypeCode(SqlTypes.JSON)
+	@Builder.Default
 	private List<ManualStep> manuals = new ArrayList<>();
 
 	private String tip;

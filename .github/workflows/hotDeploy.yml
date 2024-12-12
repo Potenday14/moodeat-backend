@@ -1,0 +1,113 @@
+# 폴더 구조는 .github/workflows 구조로. 근데 파일 이름은 걍 적어도 됨
+
+name: NCP DEPLOY
+
+on:
+  push:
+    branches:
+      - feature#19-mockup-data
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+
+    env: # GitHub Actions Secrets를 docker-compose.yml 에서의 환경 변수로 설정
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      DB_DOMAIN: db
+      SPRING_DDL_AUTO: create
+
+    steps:
+      - name: Github Repository에 올린 파일 불러오기
+        uses: actions/checkout@v2
+
+      - name: JDK 21 버전 설치
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: .env 파일 만들기 -> docker-compose.yml 이 ncp 에서 사용
+        run: |
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > .env
+          echo "DOCKER_FILE_PATH=DeployDockerfile" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+
+      - name: application.yml 파일 만들기
+        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.yml
+
+      - name: 테스트 및 빌드하기
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build -x test
+
+      - name: 빌드된 파일 이름 변경하기
+        run: mv ./build/libs/*SNAPSHOT.jar ./java-app.jar
+
+
+      # cli 부분
+      - name: NCP CLI 다운로드, 이름 편하게 cli라고만 하고 끝내기
+        run: |
+          cd ~
+          mkdir ncp_cli
+          cd ncp_cli
+          wget -q https://www.ncloud.com/api/support/download/files/cli/CLI_1.1.23_20241121.zip
+          unzip -q *.zip
+          rm *.zip
+          mv CLI_* cli
+      - name: CLI Credential 세팅
+        run: |
+          cd ~/ncp_cli/cli/cli_linux
+          echo -e "\n\n\n" | ./ncloud configure
+      - name: 깃허브 액션 IP 구하기
+        id: ip
+        uses: haythem/public-ip@v1.3
+      - name: ACG 에 깃허브 액션 IP 인바운드 규칙 추가
+        run: |
+          echo "${{ secrets.NCLOUD_CONFIGURE }}" > ~/.ncloud/configure
+          cd ~/ncp_cli/cli/cli_linux
+          ./ncloud vserver addAccessControlGroupInboundRule \
+          --regionCode KR \
+          --vpcNo ${{ secrets.NCLOUD_VPC_NO }} \
+          --accessControlGroupNo ${{ secrets.NCLOUD_ACG_NO }} \
+          --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ steps.ip.outputs.ipv4 }}/32', portRange='22'"
+
+      #cli - 규칙 추가까진 성공
+
+      - name: 필요 파일 scp 전송
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.NCP_HOST_IP }}
+          username: ${{ secrets.NCP_USERNAME }}
+          password: ${{ secrets.NCP_PASSWORD }}
+          source: "docker-compose.yml,.env,java-app.jar,DeployDockerfile"
+          target: "/root/project/"
+
+      - name: SSH로 EC2 원격 접속해서 실행시키기
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.NCP_HOST_IP }}
+          username: ${{ secrets.NCP_USERNAME }}
+          password: ${{ secrets.NCP_PASSWORD }}
+          script_stop: true
+          script: |
+            cd /root/project
+            sudo chmod +x java-app.jar
+            docker-compose build
+            docker-compose up -d
+
+
+
+
+      - name: ACG 에 깃허브 액션 IP 인바운드 규칙 삭제
+        run: |
+          cd ~/ncp_cli/cli/cli_linux
+          
+          ./ncloud vserver removeAccessControlGroupInboundRule \
+          --regionCode KR \
+          --vpcNo ${{ secrets.NCLOUD_VPC_NO }} \
+          --accessControlGroupNo ${{ secrets.NCLOUD_ACG_NO }} \
+          --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ steps.ip.outputs.ipv4 }}/32', portRange='22'"
+
