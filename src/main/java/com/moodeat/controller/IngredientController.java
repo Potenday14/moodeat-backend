@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moodeat.dto.ExampleErrorResponse;
-import com.moodeat.dto.ingredients.ResponseGetIngredients;
+import com.moodeat.dto.ResponseError;
+import com.moodeat.dto.ingredient.ResponseGetIngredients;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,7 +31,7 @@ public class IngredientController {
 			content = @Content(mediaType = "application/json",
 				schema = @Schema(implementation = ResponseGetIngredients.class))),
 		@ApiResponse(responseCode = "400", description = "재료 조회 리스트 응답 실패",
-			content = @Content(schema = @Schema(implementation = ExampleErrorResponse.class)))
+			content = @Content(schema = @Schema(implementation = ResponseError.class)))
 	})
 	@GetMapping()
 	public ResponseEntity<ResponseGetIngredients> getIngredients(

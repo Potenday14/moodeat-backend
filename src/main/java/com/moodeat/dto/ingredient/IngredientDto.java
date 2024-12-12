@@ -1,4 +1,4 @@
-package com.moodeat.dto.shared;
+package com.moodeat.dto.ingredient;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -11,5 +11,4 @@ public class IngredientDto {
 
 	@Schema(description = "재료 이름", example = "쌀")
 	private String name;
-
 }

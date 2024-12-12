@@ -4,7 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class ResponseRecommendRecipes {
-	@Schema(description = "완성 후 반환되는 추천 ID", example = "2")
+public class ResponsePostRecipeRecommendations {
+
+	@Schema(description = "완성 후 반환되는 추천 레시피 목록 ID", example = "2")
 	private Long recommendationId;
 }

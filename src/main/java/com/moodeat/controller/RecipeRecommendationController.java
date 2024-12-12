@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moodeat.dto.ExampleErrorResponse;
-import com.moodeat.dto.recipe.recommendation.RequestRecommendRecipes;
-import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendations;
-import com.moodeat.dto.recipe.recommendation.ResponseRecommendRecipes;
+import com.moodeat.dto.ResponseError;
+import com.moodeat.dto.recipe.recommendation.RequestPostRecipeRecommendations;
+import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendationsById;
+import com.moodeat.dto.recipe.recommendation.ResponsePostRecipeRecommendations;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,39 +30,39 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RecipeRecommendationController {
 
-	@Operation(summary = "레시피 추천 요청", description = "감정, 재료, 채팅기록을 통해 레시피 추천을 요청합니다. 이후 추천 리스트를 확인할 수 있는 id를 반환합니다.")
+	@Operation(summary = "추천 레시피 생성 요청", description = "감정, 재료, 채팅기록을 통해 레시피 추천을 요청합니다. 이후 추천 리스트를 확인할 수 있는 id를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "추천 레시피 생성 성공",
 			content = @Content(mediaType = "application/json",
-				schema = @Schema(implementation = ResponseRecommendRecipes.class))),
+				schema = @Schema(implementation = ResponsePostRecipeRecommendations.class))),
 		@ApiResponse(responseCode = "400", description = "추천 레시피 생성 실패",
-			content = @Content(schema = @Schema(implementation = ExampleErrorResponse.class)))
+			content = @Content(schema = @Schema(implementation = ResponseError.class)))
 	})
 	@PostMapping()
-	public ResponseEntity<ResponseRecommendRecipes> recommendRecipes(
-		@Valid @RequestBody RequestRecommendRecipes request
+	public ResponseEntity<ResponsePostRecipeRecommendations> postRecipeRecommendations(
+		@Valid @RequestBody RequestPostRecipeRecommendations request
 	) {
 
-		ResponseRecommendRecipes response = new ResponseRecommendRecipes();
+		ResponsePostRecipeRecommendations response = new ResponsePostRecipeRecommendations();
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	@Operation(summary = "레시피 추천 요청", description = "감정, 재료, 채팅기록을 통해 레시피 추천을 요청합니다. 이후 추천 리스트를 확인할 수 있는 id를 반환합니다.")
+	@Operation(summary = "추천 레시피 리스트 조회", description = "추천 레시피 ID로 추천 레시피 정보를 조회합니다.")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "추천 레시피 생성 성공",
+		@ApiResponse(responseCode = "200", description = "추천 레시피 조회 성공",
 			content = @Content(mediaType = "application/json",
-				schema = @Schema(implementation = ResponseGetRecipeRecommendations.class))),
-		@ApiResponse(responseCode = "400", description = "추천 레시피 생성 실패",
-			content = @Content(schema = @Schema(implementation = ExampleErrorResponse.class)))
+				schema = @Schema(implementation = ResponseGetRecipeRecommendationsById.class))),
+		@ApiResponse(responseCode = "400", description = "추천 레시피 조회 실패",
+			content = @Content(schema = @Schema(implementation = ResponseError.class)))
 	})
 	@GetMapping("/{recommendationId}")
-	public ResponseEntity<ResponseGetRecipeRecommendations> getRecipeRecommendations(
+	public ResponseEntity<ResponseGetRecipeRecommendationsById> getRecipeRecommendationsById(
 		@Parameter(description = "레시피 ID", example = "1")
-		@PathVariable("recommendationId") Long recommendationId
-	) {
+		@PathVariable("recommendationId") Long recommendationId) {
 
-		ResponseGetRecipeRecommendations response = new ResponseGetRecipeRecommendations();
+		ResponseGetRecipeRecommendationsById response =
+			new ResponseGetRecipeRecommendationsById();
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

@@ -1,4 +1,4 @@
-package com.moodeat.dto.shared;
+package com.moodeat.dto.character;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moodeat.dto.ExampleErrorResponse;
+import com.moodeat.dto.ResponseError;
 import com.moodeat.dto.character.ResponseGetCharacters;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,14 +29,11 @@ public class CharacterController {
 			content = @Content(mediaType = "application/json",
 				schema = @Schema(implementation = ResponseGetCharacters.class))),
 		@ApiResponse(responseCode = "400", description = "캐릭터 조회 리스트 응답 실패",
-			content = @Content(schema = @Schema(implementation = ExampleErrorResponse.class)))
+			content = @Content(schema = @Schema(implementation = ResponseError.class)))
 	})
 	@GetMapping()
 	public ResponseEntity<ResponseGetCharacters> getCharacters() {
-
 		ResponseGetCharacters response = new ResponseGetCharacters();
-
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-
 }

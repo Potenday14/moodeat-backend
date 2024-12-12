@@ -30,4 +30,7 @@ public class Character {
 	@Enumerated(EnumType.STRING)
 	@Column(unique = true, nullable = false, length = 10)
 	private Mood mood;
+
+	@Column
+	private String image;
 }
