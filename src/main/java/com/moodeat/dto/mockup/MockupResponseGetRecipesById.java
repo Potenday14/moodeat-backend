@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.moodeat.dto.recipe.ManualStepDto;
 import com.moodeat.dto.recipe.RecipeIngredientDto;
-import com.moodeat.dto.recipe.RecipeIngredientsDto;
-import com.moodeat.dto.recipe.RecipeSubIngredientDto;
 import com.moodeat.dto.recipe.ResponseGetRecipesById;
 
 
@@ -74,6 +72,7 @@ public class MockupResponseGetRecipesById extends ResponseGetRecipesById {
 		setMockupManuals();
 		setMainPhoto("~~~.jpg");
 		setTip("조리 시간을 단축하려면 이렇게 해보세요!");
+		setReason("만들기도 간단하면서 얼큰하고 칼칼한 맛이 매력적인 돼지고기 김치찌개!!");
 		setMinutes(20);
 		setCalories(128);
 		setCarbohydrates(123);
@@ -87,50 +86,29 @@ public class MockupResponseGetRecipesById extends ResponseGetRecipesById {
 
 	private void setMockupIngredients() {
 
-		RecipeIngredientsDto ingredients = new RecipeIngredientsDto();
+		RecipeIngredientDto ingredient1 = new RecipeIngredientDto();
+		ingredient1.setId(1L);
+		ingredient1.setName("돼지고기");
+		ingredient1.setQuantity("120g");
 
-		RecipeIngredientDto main1 = new RecipeIngredientDto();
-		main1.setId(1L);
-		main1.setName("돼지고기");
-		main1.setQuantity("120g");
+		RecipeIngredientDto ingredient2 = new RecipeIngredientDto();
+		ingredient2.setId(2L);
+		ingredient2.setName("김치");
+		ingredient2.setQuantity("1/2 포기");
 
-		RecipeIngredientDto main2 = new RecipeIngredientDto();
-		main2.setId(2L);
-		main2.setName("김치");
-		main2.setQuantity("1/2 포기");
+		RecipeIngredientDto ingredient3 = new RecipeIngredientDto();
+		ingredient3.setId(30L);
+		ingredient3.setName("간장");
+		ingredient3.setQuantity("15g");
 
-		List<RecipeIngredientDto> mainList = List.of(main1, main2);
-		ingredients.setMain(mainList);
-
-		RecipeSubIngredientDto sub1 = new RecipeSubIngredientDto();
-		sub1.setName("양념장");
-		RecipeIngredientDto sub1Data1 = new RecipeIngredientDto();
-		sub1Data1.setId(30L);
-		sub1Data1.setName("간장");
-		sub1Data1.setQuantity("15g");
-
-		RecipeIngredientDto sub1Data2 = new RecipeIngredientDto();
-		sub1Data2.setId(52L);
-		sub1Data2.setName("고추가루");
-		sub1Data2.setQuantity("5g");
-
-		sub1.setData(List.of(sub1Data1, sub1Data2));
-
-		List<RecipeSubIngredientDto> subList = List.of(sub1);
-		ingredients.setSub(subList);
-
+		RecipeIngredientDto ingredient4 = new RecipeIngredientDto();
+		ingredient4.setId(52L);
+		ingredient4.setName("고추가루");
+		ingredient4.setQuantity("5g");
+		List<RecipeIngredientDto> ingredients = List.of(ingredient1, ingredient2, ingredient3, ingredient4);
 		setIngredients(ingredients);
 	}
 
-	/*
-	  "manuals": [
-    {
-      "order": 1,
-      "photo": "~~.jpg",
-      "description": "~~하세요."
-    }
-  ],
-	*/
 	private void setMockupManuals() {
 		ManualStepDto manual1 = new ManualStepDto();
 		manual1.setOrder(1);
