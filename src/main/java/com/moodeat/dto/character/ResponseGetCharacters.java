@@ -1,11 +1,12 @@
 package com.moodeat.dto.character;
 
-import com.moodeat.dto.shared.CharacterDTO;
-import lombok.Data;
-
 import java.util.List;
+
+import com.moodeat.dto.shared.CharacterDto;
+
+import lombok.Data;
 
 @Data
 public class ResponseGetCharacters {
-	private List<CharacterDTO> characters;
+	private List<CharacterDto> characters;
 }

@@ -1,4 +1,4 @@
-package com.moodeat.dto.recipe_recommendation.recommend_recipes;
+package com.moodeat.dto.recipe.recommendation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

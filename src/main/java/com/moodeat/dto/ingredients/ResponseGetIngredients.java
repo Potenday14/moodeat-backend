@@ -1,11 +1,12 @@
 package com.moodeat.dto.ingredients;
 
-import com.moodeat.dto.shared.IngredientDTO;
-import lombok.Data;
-
 import java.util.List;
+
+import com.moodeat.dto.shared.IngredientDto;
+
+import lombok.Data;
 
 @Data
 public class ResponseGetIngredients {
-	private List<IngredientDTO> ingredients;
+	private List<IngredientDto> ingredients;
 }

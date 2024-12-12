@@ -1,13 +1,14 @@
-package com.moodeat.dto.recipe_recommendation.get_recipe_recommendations;
-
-import com.moodeat.dto.shared.ManualDTO;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+package com.moodeat.dto.recipe.recommendation;
 
 import java.util.List;
 
+import com.moodeat.dto.shared.ManualDto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
 @Data
-public class RecipeRecommendationDTO {
+public class RecipeRecommendationDto {
 	@Schema(description = "레시피 ID", example = "1")
 	private Long id;
 	@Schema(description = "레시피 이름", example = "돼지고기 김치찌개")
@@ -17,7 +18,7 @@ public class RecipeRecommendationDTO {
 	@Schema(description = "레시피 대표 사진", example = "~~~.jpg")
 	private String mainPhoto;
 	@Schema(description = "레시피 조리 설명")
-	private List<ManualDTO> manuals;
+	private List<ManualDto> manuals;
 	@Schema(description = "레시피 팁", example = "조리 시간을 단축하려면 이렇게 해보세요!")
 	private String tip;
 	@Schema(description = "레시피 조리 시간(분)", example = "20")

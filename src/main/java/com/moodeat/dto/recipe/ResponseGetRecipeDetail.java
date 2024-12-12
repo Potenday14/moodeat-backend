@@ -1,12 +1,12 @@
 package com.moodeat.dto.recipe;
 
-import com.moodeat.dto.shared.ManualDTO;
-import com.moodeat.dto.shared.RecipeIngredientsDTO;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.moodeat.dto.shared.ManualDto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Data
 public class ResponseGetRecipeDetail {
@@ -19,7 +19,7 @@ public class ResponseGetRecipeDetail {
 	@Schema(description = "레시피 대표 사진", example = "~~~.jpg")
 	private String mainPhoto;
 	@Schema(description = "레시피 조리 설명")
-	private List<ManualDTO> manuals;
+	private List<ManualDto> manuals;
 	@Schema(description = "레시피 팁", example = "조리 시간을 단축하려면 이렇게 해보세요!")
 	private String tip;
 	@Schema(description = "레시피 조리 시간(분)", example = "20")
@@ -35,7 +35,7 @@ public class ResponseGetRecipeDetail {
 	@Schema(description = "레시피 나트륨", example = "33")
 	private int salt;
 	@Schema(description = "생성일", example = "2021-08-01")
-	private LocalDateTime created_at;
+	private LocalDateTime createdAt;
 	@Schema(description = "수정일", example = "2021-08-01")
-	private LocalDateTime updated_at;
+	private LocalDateTime updatedAt;
 }

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class ManualDTO {
+public class ManualDto {
 	@Schema(description = "순서", example = "1")
 	private int order;
 	@Schema(description = "사진 URL", example = "~~.jpg")
