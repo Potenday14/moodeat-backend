@@ -5,7 +5,7 @@ name: NCP DEPLOY
 on:
   push:
     branches:
-      - feature#6-swagger-deploy
+      - feature#19-mockup-data
 
 jobs:
   Deploy:
