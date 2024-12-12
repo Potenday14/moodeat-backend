@@ -18,16 +18,16 @@ public class IngredientService {
 
 	public ResponseGetIngredients getIngredientsAll() {
 		List<Ingredient> allIngredients = ingredientRepository.findAll();
-		return changeEntityToDto(allIngredients);
+		return changeEntityToDtoIngredientList(allIngredients);
 	}
 
 	public ResponseGetIngredients getIngredientsByQuery(String includes) {
 		List<Ingredient> queryIngredients
 			= ingredientRepository.findByNameContaining(includes);
-		return changeEntityToDto(queryIngredients);
+		return changeEntityToDtoIngredientList(queryIngredients);
 	}
 
-	private ResponseGetIngredients changeEntityToDto(List<Ingredient> entityList) {
+	private ResponseGetIngredients changeEntityToDtoIngredientList(List<Ingredient> entityList) {
 		List<IngredientDto> dtoList = entityList.stream()
 			.map(entity -> {
 				IngredientDto dto = new IngredientDto();
