@@ -56,14 +56,28 @@ public class Recipe {
 	@Builder.Default
 	private List<ManualStep> manuals = new ArrayList<>();
 
+	@Column(nullable = false, length = 50)
 	private String tip;
+
+	@Column(nullable = false, length = 50)
+	private String reason;
 
 	@Column(nullable = false)
 	private int minutes;
+
+	@Column(nullable = false)
 	private int calories;
+
+	@Column(nullable = false)
 	private int carbohydrates;
+
+	@Column(nullable = false)
 	private int protein;
+
+	@Column(nullable = false)
 	private int fat;
+
+	@Column(nullable = false)
 	private int salt;
 
 	@CreationTimestamp
