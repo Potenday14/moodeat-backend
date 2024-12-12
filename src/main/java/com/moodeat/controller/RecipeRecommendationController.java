@@ -15,6 +15,7 @@ import com.moodeat.dto.mockup.MockupResponsePostRecipeRecommendations;
 import com.moodeat.dto.recipe.recommendation.RequestPostRecipeRecommendations;
 import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendationsById;
 import com.moodeat.dto.recipe.recommendation.ResponsePostRecipeRecommendations;
+import com.moodeat.service.RecipeRecommendationService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,6 +32,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/recipe-recommendations")
 @RequiredArgsConstructor
 public class RecipeRecommendationController {
+
+	private final RecipeRecommendationService recipeRecommendationService;
 
 	@Operation(summary = "추천 레시피 생성 요청", description = "감정, 재료, 채팅기록을 통해 레시피 추천을 요청합니다. 이후 추천 리스트를 확인할 수 있는 id를 반환합니다.")
 	@ApiResponses(value = {
