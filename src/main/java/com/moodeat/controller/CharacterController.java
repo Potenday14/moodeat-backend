@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.moodeat.dto.ResponseError;
 import com.moodeat.dto.character.ResponseGetCharacters;
 import com.moodeat.dto.mockup.MockupResponseGetCharacters;
+import com.moodeat.service.CharacterService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/characters")
 @RequiredArgsConstructor
 public class CharacterController {
+	private final CharacterService characterService;
 
 	@Operation(summary = "캐릭터 리스트 조회", description = "감정 선택 창에서 보이는 캐릭터들의 정보의 리스트를 반환합니다")
 	@ApiResponses(value = {
