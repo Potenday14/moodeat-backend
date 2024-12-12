@@ -1,4 +1,4 @@
 package com.moodeat.repository.recipe;
 
-public interface RecipeQueryDSL {
+public interface RecipeQueryDsl {
 }
