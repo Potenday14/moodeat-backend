@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.dto.ResponseError;
 import com.moodeat.dto.ingredient.ResponseGetIngredients;
+import com.moodeat.dto.mockup.MockupResponseGetIngredients;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,7 +39,8 @@ public class IngredientController {
 		@Parameter(description = "재료 필터링 쿼리", example = "설탕")
 		@RequestParam(value = "includes", required = false) String includes
 	) {
-		ResponseGetIngredients response = new ResponseGetIngredients();
+		// ResponseGetIngredients response = new ResponseGetIngredients();
+		ResponseGetIngredients response = new MockupResponseGetIngredients();
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
