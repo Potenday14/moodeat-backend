@@ -34,7 +34,10 @@ public class Recipe {
 	@Column(name = "recipe_id")
 	private Long id;
 
-	@Column(unique = true, nullable = false, length = 20)
+	@Column(unique = true, nullable = false)
+	private Long originalId;
+
+	@Column(nullable = false, length = 20)
 	private String name;
 
 	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
