@@ -1,10 +1,11 @@
 package com.moodeat.dto.recipe_recommendation.get_recipe_recommendations;
 
+import java.util.List;
+
 import com.moodeat.dto.shared.ManualDTO;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class RecipeRecommendationDTO {
