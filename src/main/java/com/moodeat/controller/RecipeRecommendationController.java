@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.dto.ResponseError;
+import com.moodeat.dto.mockup.MockupResponseGetRecipeRecommendationsById;
+import com.moodeat.dto.mockup.MockupResponsePostRecipeRecommendations;
 import com.moodeat.dto.recipe.recommendation.RequestPostRecipeRecommendations;
 import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendationsById;
 import com.moodeat.dto.recipe.recommendation.ResponsePostRecipeRecommendations;
@@ -43,7 +45,8 @@ public class RecipeRecommendationController {
 		@Valid @RequestBody RequestPostRecipeRecommendations request
 	) {
 
-		ResponsePostRecipeRecommendations response = new ResponsePostRecipeRecommendations();
+		// ResponsePostRecipeRecommendations response = new ResponsePostRecipeRecommendations();
+		ResponsePostRecipeRecommendations response = new MockupResponsePostRecipeRecommendations();
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
@@ -62,7 +65,8 @@ public class RecipeRecommendationController {
 		@PathVariable("recommendationId") Long recommendationId) {
 
 		ResponseGetRecipeRecommendationsById response =
-			new ResponseGetRecipeRecommendationsById();
+			// new ResponseGetRecipeRecommendationsById();
+			new MockupResponseGetRecipeRecommendationsById();
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

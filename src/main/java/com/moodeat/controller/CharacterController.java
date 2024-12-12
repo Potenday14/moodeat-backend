@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.dto.ResponseError;
 import com.moodeat.dto.character.ResponseGetCharacters;
+import com.moodeat.dto.mockup.MockupResponseGetCharacters;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +34,8 @@ public class CharacterController {
 	})
 	@GetMapping()
 	public ResponseEntity<ResponseGetCharacters> getCharacters() {
-		ResponseGetCharacters response = new ResponseGetCharacters();
+		// ResponseGetCharacters response = new ResponseGetCharacters();
+		ResponseGetCharacters response = new MockupResponseGetCharacters();
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
