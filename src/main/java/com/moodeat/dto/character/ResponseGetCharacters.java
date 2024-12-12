@@ -1,11 +1,13 @@
 package com.moodeat.dto.character;
 
-import com.moodeat.dto.shared.CharacterDTO;
-import lombok.Data;
-
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Data
 public class ResponseGetCharacters {
-	private List<CharacterDTO> characters;
+
+	@Schema(description = "캐릭터 리스트")
+	private List<CharacterDto> characters;
 }
