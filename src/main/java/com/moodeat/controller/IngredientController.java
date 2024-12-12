@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.dto.ResponseError;
 import com.moodeat.dto.ingredient.ResponseGetIngredients;
-import com.moodeat.dto.mockup.MockupResponseGetIngredients;
 import com.moodeat.service.IngredientService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,8 +41,13 @@ public class IngredientController {
 		@RequestParam(value = "includes", required = false) String includes
 	) {
 		// ResponseGetIngredients response = new ResponseGetIngredients();
-		ResponseGetIngredients response = new MockupResponseGetIngredients();
-
+		// ResponseGetIngredients response = new MockupResponseGetIngredients();
+		ResponseGetIngredients response;
+		if (includes == null || "".equals(includes)) {
+			response = ingredientService.getIngredientsAll();
+		} else {
+			response = ingredientService.getIngredientsByQuery(includes);
+		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
