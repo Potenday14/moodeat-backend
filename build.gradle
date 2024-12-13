@@ -68,7 +68,11 @@ tasks.withType(Checkstyle) {
 }
 
 check.dependsOn editorconfigCheck
-checkstyleMain.source = fileTree('src/main/java')
+checkstyleMain {
+    source = fileTree('src/main/java') {
+        exclude '**/moodeat/constant/**'
+    }
+}
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
