@@ -1,6 +1,7 @@
 package com.moodeat.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,25 +22,47 @@ public class IngredientService {
 
 	public ResponseGetIngredients getIngredientsAll() {
 		List<Ingredient> allIngredients = ingredientRepository.findAll(pageable).stream().toList();
-		return changeEntityToDtoIngredientList(allIngredients);
+		List<IngredientDto> dtoList = changeEntityToDtoIngredientList(allIngredients);
+		return changeDtoListToResponse(dtoList);
 	}
 
 	public ResponseGetIngredients getIngredientsByQuery(String includes) {
+		Ingredient ingredient = ingredientRepository.findByName(includes);
 		List<Ingredient> queryIngredients
 			= ingredientRepository.findByNameContaining(includes, pageable);
-		return changeEntityToDtoIngredientList(queryIngredients);
+		List<IngredientDto> dtoList = changeEntityToDtoIngredientList(queryIngredients);
+		setExactMatchToTop(dtoList, ingredient);
+		return changeDtoListToResponse(dtoList);
 	}
 
-	private ResponseGetIngredients changeEntityToDtoIngredientList(List<Ingredient> entityList) {
+	private List<IngredientDto> changeEntityToDtoIngredientList(List<Ingredient> entityList) {
 		List<IngredientDto> dtoList = entityList.stream()
 			.map(entity -> {
 				IngredientDto dto = new IngredientDto();
 				dto.setId(entity.getId());
 				dto.setName(entity.getName());
 				return dto;
-			}).toList();
+			}).collect(Collectors.toList());
+		return dtoList;
+	}
+
+	private ResponseGetIngredients changeDtoListToResponse(List<IngredientDto> dtoList) {
 		ResponseGetIngredients responseGetIngredients = new ResponseGetIngredients();
 		responseGetIngredients.setIngredients(dtoList);
 		return responseGetIngredients;
+	}
+
+	private void setExactMatchToTop(List<IngredientDto> dtoList, Ingredient exactMatch) {
+		if (exactMatch == null) {
+			return;
+		}
+		IngredientDto exactMatchDto = dtoList.stream()
+			.filter(dto -> dto.getId() == exactMatch.getId())
+			.findFirst().orElse(null);
+		if (exactMatchDto == null) {
+			return;
+		}
+		dtoList.remove(exactMatchDto);
+		dtoList.add(0, exactMatchDto);
 	}
 }
