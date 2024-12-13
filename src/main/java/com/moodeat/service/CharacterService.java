@@ -25,6 +25,7 @@ public class CharacterService {
 					dto.setId(item.getId());
 					dto.setMood(item.getMood().toString());
 					dto.setImage(item.getImage());
+					dto.setNickname(item.getNickname().getNickname());
 					return dto;
 				})
 				.toList();

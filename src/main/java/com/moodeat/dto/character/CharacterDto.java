@@ -13,4 +13,7 @@ public class CharacterDto {
 
 	@Schema(description = "감정 선택 시 캐릭터 이미지", example = "~~~.jpg")
 	private String image;
+
+	@Schema(description = "캐릭터의 닉네임", example = "Saddi")
+	private String nickname;
 }
