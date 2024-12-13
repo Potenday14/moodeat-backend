@@ -2,6 +2,7 @@ package com.moodeat.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.moodeat.domain.Ingredient;
@@ -16,14 +17,18 @@ import lombok.RequiredArgsConstructor;
 public class IngredientService {
 	private final IngredientRepository ingredientRepository;
 
+	Pageable limit = Pageable.ofSize(20);
+
 	public ResponseGetIngredients getIngredientsAll() {
-		List<Ingredient> allIngredients = ingredientRepository.findAll();
+		List<Ingredient> allIngredients = ingredientRepository.findAll(limit)
+			.stream().toList();
 		return changeEntityToDtoIngredientList(allIngredients);
 	}
 
 	public ResponseGetIngredients getIngredientsByQuery(String includes) {
+
 		List<Ingredient> queryIngredients
-			= ingredientRepository.findByNameContaining(includes);
+			= ingredientRepository.findByNameContaining(includes, limit);
 		return changeEntityToDtoIngredientList(queryIngredients);
 	}
 
