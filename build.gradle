@@ -52,7 +52,7 @@ tasks.named('test') {
 }
 
 editorconfig {
-    excludes = ['build']
+    excludes = ['build', 'src/main/java/com/moodeat/constant/**']
 }
 
 checkstyle {
