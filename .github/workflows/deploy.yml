@@ -16,7 +16,7 @@ jobs:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       DB_DOMAIN: db
-      SPRING_DDL_AUTO: create
+      SPRING_DDL_AUTO: validate
 
     steps:
       - name: Github Repository에 올린 파일 불러오기
@@ -47,7 +47,7 @@ jobs:
         run: mv ./build/libs/*SNAPSHOT.jar ./java-app.jar
 
 
-# cli 부분
+      # cli 부분
       - name: NCP CLI 다운로드, 이름 편하게 cli라고만 하고 끝내기
         run: |
           cd ~
@@ -74,7 +74,7 @@ jobs:
           --accessControlGroupNo ${{ secrets.NCLOUD_ACG_NO }} \
           --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ steps.ip.outputs.ipv4 }}/32', portRange='22'"
 
-#cli - 규칙 추가까진 성공
+      #cli - 규칙 추가까진 성공
 
       - name: 필요 파일 scp 전송
         uses: appleboy/scp-action@v0.1.4

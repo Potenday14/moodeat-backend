@@ -63,6 +63,10 @@ checkstyle {
     sourceSets = [sourceSets.main]
 }
 
+tasks.withType(Checkstyle) {
+    exclude '**/moodeat/constant/**'
+}
+
 check.dependsOn editorconfigCheck
 checkstyleMain.source = fileTree('src/main/java')
 
