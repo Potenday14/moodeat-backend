@@ -52,7 +52,7 @@ tasks.named('test') {
 }
 
 editorconfig {
-    excludes = ['build']
+    excludes = ['build', 'src/main/java/com/moodeat/constant/**']
 }
 
 checkstyle {
@@ -63,8 +63,16 @@ checkstyle {
     sourceSets = [sourceSets.main]
 }
 
+tasks.withType(Checkstyle) {
+    exclude '**/moodeat/constant/**'
+}
+
 check.dependsOn editorconfigCheck
-checkstyleMain.source = fileTree('src/main/java')
+checkstyleMain {
+    source = fileTree('src/main/java') {
+        exclude '**/moodeat/constant/**'
+    }
+}
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
