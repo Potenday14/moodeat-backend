@@ -56,7 +56,7 @@ public class Recipe {
 	@Builder.Default
 	private List<ManualStep> manuals = new ArrayList<>();
 
-	@Column(nullable = false, length = 50)
+	@Column(length = 50)
 	private String tip;
 
 	@Column(nullable = false, length = 50)
