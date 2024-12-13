@@ -6,9 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Mood {
-	HAPPY("기쁨"),
-	ANGRY("화남"),
-	SAD("슬픔");
+	HAPPY("Happi"),
+	ANGRY("Angoori"),
+	SAD("Saddi");
 
-	private final String mood;
+	private final String nickname;
 }
