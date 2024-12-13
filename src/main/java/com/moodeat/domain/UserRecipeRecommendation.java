@@ -19,7 +19,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,18 +37,18 @@ public class UserRecipeRecommendation {
 	@Column(name = "user_recipe_recommendation_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+	// @ManyToOne(fetch = LAZY)
+	// @JoinColumn(name = "user_id")
+	// private User user;
 
-	@OneToOne(fetch = LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "character_id")
 	private Character character;
 
 	@OneToMany(mappedBy = "userRecipeRecommendation", cascade = CascadeType.ALL)
 	private List<RecipeRecommendation> recipes = new ArrayList<>();
 
-	@Column(unique = true, nullable = false, length = 50)
+	@Column(unique = true, nullable = false)
 	private String reason;
 
 	@JdbcTypeCode(SqlTypes.JSON)
