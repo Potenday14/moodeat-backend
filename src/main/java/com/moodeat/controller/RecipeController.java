@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.dto.ResponseError;
-import com.moodeat.dto.mockup.MockupResponseGetRecipesById;
 import com.moodeat.dto.recipe.ResponseGetRecipesById;
 import com.moodeat.service.RecipeService;
 
@@ -19,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Tag(name = "Recipe", description = "레시피 관련 API입니다.")
@@ -41,8 +41,13 @@ public class RecipeController {
 		@PathVariable("recipeId") Long recipeId) {
 
 		// ResponseGetRecipesById response = new ResponseGetRecipesById();
-		ResponseGetRecipesById response = new MockupResponseGetRecipesById();
-
+		// ResponseGetRecipesById response = new MockupResponseGetRecipesById();
+		ResponseGetRecipesById response = null;
+		try {
+			response = recipeService.getRecipe(recipeId);
+		} catch (EntityNotFoundException e) {
+			e.getStackTrace();
+		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

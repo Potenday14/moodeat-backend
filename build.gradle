@@ -41,6 +41,10 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
     // jpa 및 querydsl  끝
+
+    // 클래스 -> 클래스 간 연결 도와주는 친구 ~ 엔티티와 DTO 묶을 때 자주 사용
+    implementation 'org.modelmapper:modelmapper:3.2.0'
+
 }
 
 tasks.named('test') {
@@ -48,7 +52,7 @@ tasks.named('test') {
 }
 
 editorconfig {
-    excludes = ['build']
+    excludes = ['build', 'src/main/java/com/moodeat/constant/**']
 }
 
 checkstyle {
@@ -59,8 +63,16 @@ checkstyle {
     sourceSets = [sourceSets.main]
 }
 
+tasks.withType(Checkstyle) {
+    exclude '**/moodeat/constant/**'
+}
+
 check.dependsOn editorconfigCheck
-checkstyleMain.source = fileTree('src/main/java')
+checkstyleMain {
+    source = fileTree('src/main/java') {
+        exclude '**/moodeat/constant/**'
+    }
+}
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'

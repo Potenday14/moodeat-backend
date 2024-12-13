@@ -19,7 +19,7 @@ public class SwaggerConfig {
 
 	private Info apiInfo() {
 		return new Info()
-			.title("무드잇 (MOOD EAT")
+			.title("무드잇 (MOOD EAT)")
 			.description("API specification")
 			.version("1.0.0");
 	}
