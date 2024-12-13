@@ -71,7 +71,7 @@ public class ClovaService {
 		tmpMap.put("role", "user");
 		tmpMap.put("content", String.format("사용자의 감정: %s\n재료 리스트: %s\n레시피 리스트: %s", mood, ingredients, menu));
 		requestMessages.add(tmpMap);
-		
+
 		// request 생성
 		Map<String, Object> requestBody = new HashMap<>();
 		requestBody.put("messages", requestMessages);
