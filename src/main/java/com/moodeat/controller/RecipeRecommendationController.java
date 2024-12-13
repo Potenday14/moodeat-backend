@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moodeat.domain.Character;
 import com.moodeat.domain.Recipe;
+import com.moodeat.domain.RecipeRecommendation;
+import com.moodeat.domain.UserRecipeRecommendation;
 import com.moodeat.dto.ResponseError;
 import com.moodeat.dto.ingredient.IngredientDto;
-import com.moodeat.dto.mockup.MockupResponseGetRecipeRecommendationsById;
 import com.moodeat.dto.recipe.recommendation.MessageDto;
+import com.moodeat.dto.recipe.recommendation.RecipeRecommendationRecipeDto;
 import com.moodeat.dto.recipe.recommendation.RequestPostRecipeRecommendations;
 import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendationsById;
 import com.moodeat.dto.recipe.recommendation.ResponsePostRecipeRecommendations;
@@ -116,9 +118,25 @@ public class RecipeRecommendationController {
 		@Parameter(description = "레시피 ID", example = "1")
 		@PathVariable("recommendationId") Long recommendationId) {
 
+		UserRecipeRecommendation userRecipeRecommendation
+			= recipeRecommendationService.getRecipeRecommendationById(recommendationId).get();
+
+		List<Recipe> recipes = userRecipeRecommendation.getRecipes().stream()
+			.map(RecipeRecommendation::getRecipe).toList();
+
 		ResponseGetRecipeRecommendationsById response =
-			// new ResponseGetRecipeRecommendationsById();
-			new MockupResponseGetRecipeRecommendationsById();
+			ResponseGetRecipeRecommendationsById.builder()
+				.reason(userRecipeRecommendation.getReason())
+				.keywords(userRecipeRecommendation.getKeywords())
+				.recipes(recipes.stream().map(r -> RecipeRecommendationRecipeDto.builder()
+					.id(r.getId())
+					.name(r.getName())
+					.mainPhoto(r.getMainPhoto())
+					.minutes(r.getMinutes())
+					.calories(r.getCalories())
+					.build()
+				).toList())
+				.build();
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

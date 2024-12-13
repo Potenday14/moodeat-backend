@@ -1,6 +1,7 @@
 package com.moodeat.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,5 +51,9 @@ public class RecipeRecommendationService {
 		}
 
 		return savedUserRecipeRecommendation.getId();
+	}
+
+	public Optional<UserRecipeRecommendation> getRecipeRecommendationById(Long recommendationId) {
+		return userRecipeRecommendationRepository.findById(recommendationId);
 	}
 }
