@@ -12,4 +12,6 @@ import com.moodeat.domain.Ingredient;
 public interface IngredientRepository
 	extends JpaRepository<Ingredient, Long> {
 	List<Ingredient> findByNameContaining(String name, Pageable pageable);
+
+	Ingredient findByName(String includes);
 }
