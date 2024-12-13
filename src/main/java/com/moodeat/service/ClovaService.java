@@ -39,6 +39,8 @@ public class ClovaService {
 		RestTemplate restTemplate = new RestTemplate();
 
 		// 메세지 입력
+		List<Map<String, String>> requestMessages = new ArrayList<>();
+
 		Map<String, String> systemMessageMap = new HashMap<>();
 		systemMessageMap.put("role", "system");
 		systemMessageMap.put("content",
@@ -56,20 +58,23 @@ public class ClovaService {
 				+ "[출력값 예시(동일 형식의 json 객체만 반환)]\n{\"recipe_ids\": [1, 3], \"keywords\": [기쁨, 합격], "
 				+ "\"reason\": \"<b>기쁜 합격 소식</b>이 있는 날 맛있는  <b>두부</b>로 만든 술 안주 어때요?\"}\n\n");
 
-		Map<String, String> userMessageMap = new HashMap<>();
+		requestMessages.add(systemMessageMap);
+
 		for (MessageDto message : messages) {
-			userMessageMap.put("role", message.getRole());
-			userMessageMap.put("content", message.getContent());
+			Map<String, String> tmpMap = new HashMap<>();
+			tmpMap.put("role", message.getRole());
+			tmpMap.put("content", message.getContent());
+			requestMessages.add(tmpMap);
 		}
 
-		userMessageMap.put("role", "user");
-		userMessageMap.put("content", String.format("사용자의 감정: %s\n재료 리스트: %s\n레시피 리스트: %s", mood, ingredients, menu));
-
-		System.out.println(systemMessageMap);
-		System.out.println(userMessageMap);
+		Map<String, String> tmpMap = new HashMap<>();
+		tmpMap.put("role", "user");
+		tmpMap.put("content", String.format("사용자의 감정: %s\n재료 리스트: %s\n레시피 리스트: %s", mood, ingredients, menu));
+		requestMessages.add(tmpMap);
+		
 		// request 생성
 		Map<String, Object> requestBody = new HashMap<>();
-		requestBody.put("messages", new Map[] {systemMessageMap, userMessageMap});
+		requestBody.put("messages", requestMessages);
 		requestBody.put("topP", 0.8);
 		requestBody.put("topK", 0);
 		requestBody.put("maxTokens", 400);
