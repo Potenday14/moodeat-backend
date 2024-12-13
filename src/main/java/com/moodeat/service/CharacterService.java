@@ -1,6 +1,7 @@
 package com.moodeat.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,9 @@ public class CharacterService {
 		ResponseGetCharacters result = new ResponseGetCharacters();
 		result.setCharacters(characterDtoList);
 		return result;
+	}
+
+	public Optional<Character> getCharacterById(Long characterId) {
+		return characterRepository.findById(characterId);
 	}
 }
