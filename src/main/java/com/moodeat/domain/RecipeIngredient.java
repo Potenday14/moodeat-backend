@@ -3,12 +3,9 @@ package com.moodeat.domain;
 import static jakarta.persistence.FetchType.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.moodeat.domain.enums.IngredientType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,13 +38,13 @@ public class RecipeIngredient {
 	@JoinColumn(name = "ingredient_id")
 	private Ingredient ingredient;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 4)
-	private IngredientType type;
+	// @Enumerated(EnumType.STRING)
+	// @Column(nullable = false, length = 4)
+	// private IngredientType type;
 
 	@Column(length = 20)
 	private String quantity;
 
-	@Column(length = 20)
-	private String name;
+	// @Column(length = 20)
+	// private String name;
 }

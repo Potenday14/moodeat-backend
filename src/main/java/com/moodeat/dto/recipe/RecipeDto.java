@@ -16,7 +16,7 @@ public class RecipeDto {
 	private String name;
 
 	@Schema(description = "레시피 재료")
-	private RecipeIngredientsDto ingredients;
+	private List<RecipeIngredientDto> ingredients;
 
 	@Schema(description = "레시피 대표 사진", example = "~~~.jpg")
 	private String mainPhoto;
@@ -26,6 +26,10 @@ public class RecipeDto {
 
 	@Schema(description = "레시피 팁", example = "조리 시간을 단축하려면 이렇게 해보세요!")
 	private String tip;
+
+	@Schema(description = "레시피 추천 설명",
+		example = "만들기도 간단하면서 고소하고 시원한 맛이 매력적인 소고기무국!!")
+	private String reason;
 
 	@Schema(description = "레시피 조리 시간(분)", example = "20")
 	private int minutes;

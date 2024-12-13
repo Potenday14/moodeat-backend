@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.moodeat.dto.ResponseError;
 import com.moodeat.dto.mockup.MockupResponseGetRecipesById;
 import com.moodeat.dto.recipe.ResponseGetRecipesById;
+import com.moodeat.service.RecipeService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/recipes")
 @RequiredArgsConstructor
 public class RecipeController {
+	private final RecipeService recipeService;
 
 	@Operation(summary = "레시피 상세 정보 조회", description = "한 개의 레시피 상세 정보를 조회합니다.")
 	@ApiResponses(value = {

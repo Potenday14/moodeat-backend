@@ -34,14 +34,20 @@ public class Recipe {
 	@Column(name = "recipe_id")
 	private Long id;
 
-	@Column(unique = true, nullable = false, length = 20)
+	@Column(unique = true, nullable = false)
+	private Long originalId;
+
+	@Column(nullable = false, length = 20)
 	private String name;
 
-	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-	private List<RecipeIngredient> mainIngredients = new ArrayList<>();
+	// @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+	// private List<RecipeIngredient> mainIngredients = new ArrayList<>();
+	//
+	// @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+	// private List<RecipeIngredient> subIngredients = new ArrayList<>();
 
 	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-	private List<RecipeIngredient> subIngredients = new ArrayList<>();
+	private List<RecipeIngredient> ingredients = new ArrayList<>();
 
 	@Column(unique = true, nullable = false)
 	private String mainPhoto;
@@ -50,14 +56,28 @@ public class Recipe {
 	@Builder.Default
 	private List<ManualStep> manuals = new ArrayList<>();
 
+	@Column(length = 50)
 	private String tip;
+
+	@Column(nullable = false, length = 50)
+	private String reason;
 
 	@Column(nullable = false)
 	private int minutes;
+
+	@Column(nullable = false)
 	private int calories;
+
+	@Column(nullable = false)
 	private int carbohydrates;
+
+	@Column(nullable = false)
 	private int protein;
+
+	@Column(nullable = false)
 	private int fat;
+
+	@Column(nullable = false)
 	private int salt;
 
 	@CreationTimestamp
