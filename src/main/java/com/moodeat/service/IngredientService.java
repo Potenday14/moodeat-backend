@@ -57,7 +57,7 @@ public class IngredientService {
 			return;
 		}
 		IngredientDto exactMatchDto = dtoList.stream()
-			.filter(dto -> dto.getId() == exactMatch.getId())
+			.filter(dto -> dto.getId().equals(exactMatch.getId()))
 			.findFirst().orElse(null);
 		if (exactMatchDto == null) {
 			return;
