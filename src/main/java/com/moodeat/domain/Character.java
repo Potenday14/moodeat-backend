@@ -1,6 +1,7 @@
 package com.moodeat.domain;
 
 import com.moodeat.domain.enums.Mood;
+import com.moodeat.domain.enums.Nickname;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,6 +27,10 @@ public class Character {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "character_id")
 	private Long id;
+
+	@Enumerated(EnumType.STRING)
+	@Column(unique = true, nullable = false, length = 10)
+	private Nickname nickname;
 
 	@Enumerated(EnumType.STRING)
 	@Column(unique = true, nullable = false, length = 10)
