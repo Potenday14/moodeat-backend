@@ -48,7 +48,7 @@ public class UserRecipeRecommendation {
 	@OneToMany(mappedBy = "userRecipeRecommendation", cascade = CascadeType.ALL)
 	private List<RecipeRecommendation> recipes = new ArrayList<>();
 
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	private String reason;
 
 	@JdbcTypeCode(SqlTypes.JSON)
