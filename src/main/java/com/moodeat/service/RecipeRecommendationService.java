@@ -17,6 +17,7 @@ import com.moodeat.repository.recipe.RecipeRepository;
 import com.moodeat.repository.recipe.recommendation.RecipeRecommendationRepository;
 import com.moodeat.repository.user.recipe.recommendation.UserRecipeRecommendationRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,24 +29,27 @@ public class RecipeRecommendationService {
 
 	@Transactional
 	public Long saveRecipeRecommendation(
-		List<Long> recipeIds, List<MessageDto> chatHistories, List<String> keywords, String reason,
-		Character character
+		List<Long> recipeIds, Character character, String reason, List<String> keywords, List<MessageDto> chatHistories
 	) {
 		UserRecipeRecommendation userRecipeRecommendation = UserRecipeRecommendation.builder()
+			.character(character)
+			.reason(reason)
+			.keywords(keywords)
 			.chatHistories(chatHistories.stream().map(c ->
 				Message.builder()
 					.role(MessageRole.valueOf(c.getRole().toUpperCase()))
-					.content(c.getContent()).build()).toList())
-			.keywords(keywords)
-			.reason(reason).character(character).build();
+					.content(c.getContent())
+					.build()).toList())
+			.build();
+
 		UserRecipeRecommendation savedUserRecipeRecommendation = userRecipeRecommendationRepository.save(
 			userRecipeRecommendation);
 
 		for (Long id : recipeIds) {
-			Recipe recipe = recipeRepository.findById(id).get();
+			Recipe recipe = recipeRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 			RecipeRecommendation recipeRecommendation = RecipeRecommendation.builder()
-				.recipe(recipe)
 				.userRecipeRecommendation(savedUserRecipeRecommendation)
+				.recipe(recipe)
 				.build();
 			recipeRecommendationRepository.save(recipeRecommendation);
 		}

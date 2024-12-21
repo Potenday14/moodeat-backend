@@ -105,9 +105,10 @@ public class RecipeRecommendationController {
 		// 생성된 레시피 저장
 		Long id = recipeRecommendationService.saveRecipeRecommendation(
 			result.getRecipeIds(),
-			request.getChatHistories(),
+			character,
+			result.getReason(),
 			result.getKeywords(),
-			result.getReason(), character
+			request.getChatHistories()
 		);
 
 		ResponsePostRecipeRecommendations response = new ResponsePostRecipeRecommendations();
