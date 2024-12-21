@@ -75,10 +75,6 @@ public class RecipeService {
 	}
 
 	public List<Recipe> getRecipesByIngredientIds(List<Long> ingredientIds) {
-		return recipeRepository.findByIngredients_Ingredient_IdIn(ingredientIds);
-	}
-
-	public List<Recipe> getRecipesByIds(List<Long> recipeIds) throws EntityNotFoundException {
-		return recipeRepository.findAllById(recipeIds);
+		return recipeRepository.findDistinctByIngredientsIngredientIdIn(ingredientIds);
 	}
 }
