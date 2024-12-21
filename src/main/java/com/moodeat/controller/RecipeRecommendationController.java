@@ -18,10 +18,12 @@ import com.moodeat.domain.Character;
 import com.moodeat.domain.Recipe;
 import com.moodeat.domain.RecipeRecommendation;
 import com.moodeat.domain.UserRecipeRecommendation;
+import com.moodeat.domain.enums.Mood;
 import com.moodeat.dto.ResponseError;
 import com.moodeat.dto.clova.RequestCreateRecipeRecommendation;
 import com.moodeat.dto.clova.ResponseCreateRecipeRecommendation;
 import com.moodeat.dto.ingredient.IngredientDto;
+import com.moodeat.dto.recipe.recommendation.MessageDto;
 import com.moodeat.dto.recipe.recommendation.RecipeRecommendationRecipeDto;
 import com.moodeat.dto.recipe.recommendation.RequestPostRecipeRecommendations;
 import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendationsById;
@@ -65,36 +67,42 @@ public class RecipeRecommendationController {
 		@Valid @RequestBody RequestPostRecipeRecommendations request
 	) {
 
-		// 1. 재료로 레시피 필터링 후 가져오기
+		// 1. 무드 조회
+		Long characterId = request.getCharacterId();
+		Character character = characterService.getCharacterById(characterId);
+		Mood mood = character.getMood();
+
+		// 2. 레시피 ID와 이름 추출
+		// (1) 재료로 레시피 필터링 후 가져오기
 		List<Long> ingredientIds = request.getIngredients().stream().map(IngredientDto::getId).toList();
 		List<Recipe> recipes = recipeService.getRecipesByIngredientIds(ingredientIds);
 
-		// 2. 레시피 이름을 추출하기
-		Map<Long, String> menuMap = new HashMap<>();
+		// (2) 맵에 저장
+		Map<Long, String> recipeIdAndNames = new HashMap<>();
 		for (Recipe recipe : recipes) {
-			menuMap.put(recipe.getId(), recipe.getName());
+			recipeIdAndNames.put(recipe.getId(), recipe.getName());
 		}
 
-		// 3. 재료명 추출하기
+		// 3. 재료명 추출
 		List<IngredientDto> ingredients = request.getIngredients();
 		List<String> ingredientNames = new ArrayList<>();
 		for (IngredientDto ingredient : ingredients) {
 			ingredientNames.add(ingredient.getName());
 		}
 
-		Long characterId = (long)request.getCharacterId();
-		Character character = characterService.getCharacterById(characterId).get();
+		// 4. 채팅 내역 가져오기
+		List<MessageDto> chatHistories = request.getChatHistories();
 
-		RequestCreateRecipeRecommendation clovaRequest = new RequestCreateRecipeRecommendation();
-		clovaRequest.setMood(character.getMood());
-		clovaRequest.setRecipeIdAndNames(menuMap);
-		clovaRequest.setIngredientNames(ingredientNames);
-		clovaRequest.setChatHistories(request.getChatHistories());
+		RequestCreateRecipeRecommendation dto = new RequestCreateRecipeRecommendation();
+		dto.setMood(mood);
+		dto.setRecipeIdAndNames(recipeIdAndNames);
+		dto.setIngredientNames(ingredientNames);
+		dto.setChatHistories(chatHistories);
 
-		// 4. 레시피 이름, 재료, 무드, 채팅 내역 기반으로 추천 레시피 생성
-		ResponseCreateRecipeRecommendation result = clovaService.createRecipeRecommendation(clovaRequest);
+		// 무드, 레시피 이름, 재료, 채팅 내역 기반으로 추천 레시피 생성
+		ResponseCreateRecipeRecommendation result = clovaService.createRecipeRecommendation(dto);
 
-		// 5. 생성된 레시피 저장
+		// 생성된 레시피 저장
 		Long id = recipeRecommendationService.saveRecipeRecommendation(
 			result.getRecipeIds(),
 			request.getChatHistories(),

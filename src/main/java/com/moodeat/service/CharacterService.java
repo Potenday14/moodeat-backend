@@ -1,7 +1,6 @@
 package com.moodeat.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -10,6 +9,7 @@ import com.moodeat.dto.character.CharacterDto;
 import com.moodeat.dto.character.ResponseGetCharacters;
 import com.moodeat.repository.character.CharacterRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,7 +35,7 @@ public class CharacterService {
 		return result;
 	}
 
-	public Optional<Character> getCharacterById(Long characterId) {
-		return characterRepository.findById(characterId);
+	public Character getCharacterById(Long characterId) throws EntityNotFoundException {
+		return characterRepository.findById(characterId).orElseThrow(EntityNotFoundException::new);
 	}
 }
