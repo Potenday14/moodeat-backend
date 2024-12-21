@@ -28,7 +28,7 @@ public class RecipeRecommendationService {
 
 	@Transactional
 	public Long saveRecipeRecommendation(
-		List<Integer> recipeIds, List<MessageDto> chatHistories, List<String> keywords, String reason,
+		List<Long> recipeIds, List<MessageDto> chatHistories, List<String> keywords, String reason,
 		Character character
 	) {
 		UserRecipeRecommendation userRecipeRecommendation = UserRecipeRecommendation.builder()
@@ -41,8 +41,8 @@ public class RecipeRecommendationService {
 		UserRecipeRecommendation savedUserRecipeRecommendation = userRecipeRecommendationRepository.save(
 			userRecipeRecommendation);
 
-		for (Integer id : recipeIds) {
-			Recipe recipe = recipeRepository.findById((long)id).get();
+		for (Long id : recipeIds) {
+			Recipe recipe = recipeRepository.findById(id).get();
 			RecipeRecommendation recipeRecommendation = RecipeRecommendation.builder()
 				.recipe(recipe)
 				.userRecipeRecommendation(savedUserRecipeRecommendation)

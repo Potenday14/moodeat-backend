@@ -19,8 +19,9 @@ import com.moodeat.domain.Recipe;
 import com.moodeat.domain.RecipeRecommendation;
 import com.moodeat.domain.UserRecipeRecommendation;
 import com.moodeat.dto.ResponseError;
+import com.moodeat.dto.clova.RequestCreateRecipeRecommendation;
+import com.moodeat.dto.clova.ResponseCreateRecipeRecommendation;
 import com.moodeat.dto.ingredient.IngredientDto;
-import com.moodeat.dto.recipe.recommendation.MessageDto;
 import com.moodeat.dto.recipe.recommendation.RecipeRecommendationRecipeDto;
 import com.moodeat.dto.recipe.recommendation.RequestPostRecipeRecommendations;
 import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendationsById;
@@ -84,19 +85,21 @@ public class RecipeRecommendationController {
 		Long characterId = (long)request.getCharacterId();
 		Character character = characterService.getCharacterById(characterId).get();
 
-		String mood = character.getMood().getMood();
-
-		List<MessageDto> messages = request.getChatHistories();
+		RequestCreateRecipeRecommendation clovaRequest = new RequestCreateRecipeRecommendation();
+		clovaRequest.setMood(character.getMood());
+		clovaRequest.setRecipeIdAndNames(menuMap);
+		clovaRequest.setIngredientNames(ingredientNames);
+		clovaRequest.setChatHistories(request.getChatHistories());
 
 		// 4. 레시피 이름, 재료, 무드, 채팅 내역 기반으로 추천 레시피 생성
-		Map<String, Object> result = clovaService.createRecipe(messages, mood, menuMap, ingredientNames);
+		ResponseCreateRecipeRecommendation result = clovaService.createRecipeRecommendation(clovaRequest);
 
 		// 5. 생성된 레시피 저장
 		Long id = recipeRecommendationService.saveRecipeRecommendation(
-			(List<Integer>)result.get("recipe_ids"),
-			messages,
-			(List<String>)result.get("keywords"),
-			(String)result.get("reason"), character
+			result.getRecipeIds(),
+			request.getChatHistories(),
+			result.getKeywords(),
+			result.getReason(), character
 		);
 
 		ResponsePostRecipeRecommendations response = new ResponsePostRecipeRecommendations();
