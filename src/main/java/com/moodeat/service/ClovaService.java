@@ -1,7 +1,9 @@
 package com.moodeat.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -12,11 +14,19 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moodeat.domain.Character;
+import com.moodeat.domain.Recipe;
+import com.moodeat.domain.enums.Mood;
 import com.moodeat.dto.clova.ChatCompletionsDto;
 import com.moodeat.dto.clova.RequestCreateRecipeRecommendation;
 import com.moodeat.dto.clova.ResponseCreateRecipeRecommendation;
+import com.moodeat.dto.ingredient.IngredientDto;
 import com.moodeat.dto.recipe.recommendation.MessageDto;
+import com.moodeat.dto.recipe.recommendation.RequestPostRecipeRecommendations;
+import com.moodeat.repository.character.CharacterRepository;
+import com.moodeat.repository.recipe.RecipeRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -32,6 +42,48 @@ public class ClovaService {
 	private String apigwKey;
 	@Value("${clova.request-id}")
 	private String requestId;
+
+	private final CharacterRepository characterRepository;
+	private final RecipeRepository recipeRepository;
+
+	// 밑에 건 파라미터가 s 없고, 지금은 s 있는겁니다...! 리퀘스트 바디를 그대로 가져왔어요!
+	public ResponseCreateRecipeRecommendation createRecipeRecommendation(RequestPostRecipeRecommendations request) {
+		// 1. 무드 조회
+		Long characterId = request.getCharacterId();
+		Character character = characterRepository.findById(characterId).orElseThrow(EntityNotFoundException::new);
+		Mood mood = character.getMood();
+
+		// 2. 레시피 ID와 이름 추출
+		// (1) 재료로 레시피 필터링 후 가져오기
+		List<Long> ingredientIds = request.getIngredients().stream().map(IngredientDto::getId).toList();
+		List<Recipe> recipes = recipeRepository.findDistinctByIngredientsIngredientIdIn(ingredientIds);
+
+		// (2) 맵에 저장
+		Map<Long, String> recipeIdAndNames = new HashMap<>();
+		for (Recipe recipe : recipes) {
+			recipeIdAndNames.put(recipe.getId(), recipe.getName());
+		}
+		// 3. 재료명 추출
+		List<IngredientDto> ingredients = request.getIngredients();
+		List<String> ingredientNames = new ArrayList<>();
+		for (IngredientDto ingredient : ingredients) {
+			ingredientNames.add(ingredient.getName());
+		}
+		// 이건 그냥 갑자기 생각난 건데 2번 첫 줄 처럼 3번 전체를 밑에 한 줄로 할 수도 있을 거 같네요...?
+		// List<String> ingredientNameList
+		// = request.getIngredients().stream().map(IngredientDto::getName).toList();
+
+		// 4. 채팅 내역 가져오기
+		List<MessageDto> chatHistories = request.getChatHistories();
+
+		RequestCreateRecipeRecommendation dto = new RequestCreateRecipeRecommendation();
+		dto.setMood(mood);
+		dto.setRecipeIdAndNames(recipeIdAndNames);
+		dto.setIngredientNames(ingredientNames);
+		dto.setChatHistories(chatHistories);
+
+		return createRecipeRecommendation(dto);
+	}
 
 	public ResponseCreateRecipeRecommendation createRecipeRecommendation(RequestCreateRecipeRecommendation request) {
 		ChatCompletionsDto requestBody = createChatCompletionsDto(request);

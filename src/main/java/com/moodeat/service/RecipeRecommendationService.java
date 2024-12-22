@@ -14,6 +14,7 @@ import com.moodeat.domain.enums.MessageRole;
 import com.moodeat.dto.recipe.recommendation.MessageDto;
 import com.moodeat.dto.recipe.recommendation.RecipeRecommendationRecipeDto;
 import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendationsById;
+import com.moodeat.repository.character.CharacterRepository;
 import com.moodeat.repository.recipe.RecipeRepository;
 import com.moodeat.repository.recipe.recommendation.RecipeRecommendationRepository;
 import com.moodeat.repository.user.recipe.recommendation.UserRecipeRecommendationRepository;
@@ -27,6 +28,16 @@ public class RecipeRecommendationService {
 	private final UserRecipeRecommendationRepository userRecipeRecommendationRepository;
 	private final RecipeRecommendationRepository recipeRecommendationRepository;
 	private final RecipeRepository recipeRepository;
+
+	private final CharacterRepository characterRepository;
+
+	@Transactional
+	public Long saveRecipeRecommendation(
+		List<Long> recipeIds, Long characterId, String reason, List<String> keywords, List<MessageDto> chatHistories
+	) {
+		Character character = characterRepository.findById(characterId).orElseThrow();
+		return saveRecipeRecommendation(recipeIds, character, reason, keywords, chatHistories);
+	}
 
 	@Transactional
 	public Long saveRecipeRecommendation(
