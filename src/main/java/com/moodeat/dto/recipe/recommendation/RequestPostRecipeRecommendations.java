@@ -11,7 +11,7 @@ import lombok.Data;
 public class RequestPostRecipeRecommendations {
 
 	@Schema(description = "캐릭터 ID", example = "2")
-	private Integer characterId;
+	private Long characterId;
 
 	@Schema(description = "사용자 선택 재료 리스트")
 	private List<IngredientDto> ingredients;

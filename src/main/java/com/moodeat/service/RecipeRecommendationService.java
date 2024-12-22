@@ -1,7 +1,6 @@
 package com.moodeat.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +12,13 @@ import com.moodeat.domain.RecipeRecommendation;
 import com.moodeat.domain.UserRecipeRecommendation;
 import com.moodeat.domain.enums.MessageRole;
 import com.moodeat.dto.recipe.recommendation.MessageDto;
+import com.moodeat.dto.recipe.recommendation.RecipeRecommendationRecipeDto;
+import com.moodeat.dto.recipe.recommendation.ResponseGetRecipeRecommendationsById;
 import com.moodeat.repository.recipe.RecipeRepository;
 import com.moodeat.repository.recipe.recommendation.RecipeRecommendationRepository;
 import com.moodeat.repository.user.recipe.recommendation.UserRecipeRecommendationRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,24 +30,27 @@ public class RecipeRecommendationService {
 
 	@Transactional
 	public Long saveRecipeRecommendation(
-		List<Integer> recipeIds, List<MessageDto> chatHistories, List<String> keywords, String reason,
-		Character character
+		List<Long> recipeIds, Character character, String reason, List<String> keywords, List<MessageDto> chatHistories
 	) {
 		UserRecipeRecommendation userRecipeRecommendation = UserRecipeRecommendation.builder()
+			.character(character)
+			.reason(reason)
+			.keywords(keywords)
 			.chatHistories(chatHistories.stream().map(c ->
 				Message.builder()
 					.role(MessageRole.valueOf(c.getRole().toUpperCase()))
-					.content(c.getContent()).build()).toList())
-			.keywords(keywords)
-			.reason(reason).character(character).build();
+					.content(c.getContent())
+					.build()).toList())
+			.build();
+
 		UserRecipeRecommendation savedUserRecipeRecommendation = userRecipeRecommendationRepository.save(
 			userRecipeRecommendation);
 
-		for (Integer id : recipeIds) {
-			Recipe recipe = recipeRepository.findById((long)id).get();
+		for (Long id : recipeIds) {
+			Recipe recipe = recipeRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 			RecipeRecommendation recipeRecommendation = RecipeRecommendation.builder()
-				.recipe(recipe)
 				.userRecipeRecommendation(savedUserRecipeRecommendation)
+				.recipe(recipe)
 				.build();
 			recipeRecommendationRepository.save(recipeRecommendation);
 		}
@@ -53,7 +58,32 @@ public class RecipeRecommendationService {
 		return savedUserRecipeRecommendation.getId();
 	}
 
-	public Optional<UserRecipeRecommendation> getRecipeRecommendationById(Long recommendationId) {
-		return userRecipeRecommendationRepository.findById(recommendationId);
+	public ResponseGetRecipeRecommendationsById getRecipeRecommendationById(Long recommendationId) {
+		UserRecipeRecommendation userRecipeRecommendation =
+			userRecipeRecommendationRepository.findById(recommendationId).orElseThrow(EntityNotFoundException::new);
+
+		List<Recipe> recipes = userRecipeRecommendation.getRecipes().stream()
+			.map(RecipeRecommendation::getRecipe).toList();
+
+		ResponseGetRecipeRecommendationsById response = new ResponseGetRecipeRecommendationsById();
+		response.setReason(userRecipeRecommendation.getReason());
+		response.setKeywords(userRecipeRecommendation.getKeywords());
+		response.setRecipes(changeEntityToDtoRecipeRecommendationRecipeList(recipes));
+
+		return response;
+	}
+
+	private List<RecipeRecommendationRecipeDto> changeEntityToDtoRecipeRecommendationRecipeList(
+		List<Recipe> entityList) {
+		return entityList.stream()
+			.map(entity -> {
+				RecipeRecommendationRecipeDto dto = new RecipeRecommendationRecipeDto();
+				dto.setId(entity.getId());
+				dto.setName(entity.getName());
+				dto.setMainPhoto(entity.getMainPhoto());
+				dto.setMinutes(entity.getMinutes());
+				dto.setCalories(entity.getCalories());
+				return dto;
+			}).toList();
 	}
 }
