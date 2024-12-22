@@ -1,10 +1,8 @@
 package com.moodeat.dto.recipe.recommendation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Data;
 
-@Builder
 @Data
 public class RecipeRecommendationRecipeDto {
 
